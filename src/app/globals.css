@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #F7F1E8;
+  --color-ivory-light: #FDFBF7;
+  --color-silk: #EDE2D3;
+  --color-silk-dark: #DFD1BE;
+  --color-gold: #C5A46D;
+  --color-gold-light: #D9BD87;
+  --color-gold-pale: #F3EBDD;
+  --color-gold-dark: #A38450;
+  --color-royal-brown: #392B24;
+  --color-royal-dark: #201713;
+  --color-muted-text: #857667;
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --bg-ivory: #F7F1E8;
+  --text-royal: #392B24;
+  --accent-gold: #C5A46D;
+}
+
+html {
+  background-color: #F7F1E8;
+  color: #392B24;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F7F1E8;
+  color: #392B24;
+  overflow-x: hidden;
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F1E8;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9BD87;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A46D;
+}
+
+/* Subtle Shimmer & Caustic Glows */
+@keyframes subtle-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-gold {
+  background: linear-gradient(90deg, #C5A46D 0%, #F5E8D3 50%, #C5A46D 100%);
+  background-size: 200% 100%;
+  animation: subtle-shimmer 6s infinite linear;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border {
+  border-color: rgba(197, 164, 109, 0.35);
+}
+
+.gold-border-light {
+  border-color: rgba(197, 164, 109, 0.18);
+}
