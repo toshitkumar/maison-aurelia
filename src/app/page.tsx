@@ -6,6 +6,7 @@ import { PRODUCTS } from '@/data/products';
 import LuxuryHeader from '@/components/layout/LuxuryHeader';
 import LuxuryFooter from '@/components/layout/LuxuryFooter';
 import MainExperienceCanvas from '@/components/3d/MainExperienceCanvas';
+import BrandMotionScrubSection from '@/components/sections/BrandMotionScrubSection';
 import InteractiveRingViewer from '@/components/3d/InteractiveRingViewer';
 import MasterpieceBoxViewer from '@/components/3d/MasterpieceBoxViewer';
 import SignatureCollectionSection from '@/components/sections/SignatureCollectionSection';
@@ -318,6 +319,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* ========================================================= */}
+        {/* BRANDMOTION SIGNATURE: AURELIA JEWELS EXPLODED VIEW */}
+        {/* ========================================================= */}
+        <BrandMotionScrubSection />
 
         {/* ========================================================= */}
         {/* ACT 4: THE SIGNATURE COLLECTION (Interactive 3D Showroom) */}

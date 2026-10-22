@@ -43,7 +43,7 @@ export default function LuxuryHeader({
 
   const navLinks = [
     { label: 'The Origin', target: 'section-origin' },
-    { label: 'Craftsmanship', target: 'section-craftsmanship' },
+    { label: 'Exploded View', target: 'section-scrub-experience' },
     { label: 'The Silk Gallery', target: 'section-silk' },
     { label: 'Collections', target: 'section-collection' },
     { label: 'The Royal Ring', target: 'section-ring' },
