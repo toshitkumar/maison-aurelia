@@ -41,7 +41,7 @@ export interface CartItem {
   engraving?: string;
 }
 
-export type Currency = 'USD' | 'EUR' | 'GBP' | 'JPY';
+export type Currency = 'INR' | 'USD' | 'EUR' | 'GBP';
 
 export interface CurrencyConfig {
   symbol: string;
