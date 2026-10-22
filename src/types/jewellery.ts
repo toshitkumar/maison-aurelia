@@ -18,6 +18,7 @@ export interface Product {
   category: 'rings' | 'necklaces' | 'earrings' | 'bracelets';
   categoryLabel: string;
   price: number;
+  image: string;
   originalPrice?: number;
   description: string;
   editorialQuote: string;

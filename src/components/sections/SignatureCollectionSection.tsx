@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { Product, Currency } from '@/types/jewellery';
-import { Heart, ShoppingBag, Eye, Sparkles, Filter } from 'lucide-react';
+import { getAssetUrl } from '@/utils/assetPath';
+import { Heart, ShoppingBag, Eye, Sparkles } from 'lucide-react';
 
 interface SignatureCollectionProps {
   products: Product[];
@@ -85,25 +86,21 @@ export default function SignatureCollectionSection({
                 onMouseLeave={() => setHoveredProduct(null)}
                 className="group relative bg-[#EDE2D3]/30 rounded-2xl border border-[#C5A46D]/25 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:border-[#C5A46D]/60 flex flex-col justify-between"
               >
-                {/* Visual Preview Container */}
-                <div className="relative h-72 md:h-80 w-full overflow-hidden bg-gradient-to-b from-[#F7F1E8] to-[#EDE2D3] flex items-center justify-center p-8">
-                  {/* Subtle Light Sweep Animation on Card */}
+                {/* Visual Editorial Image Container */}
+                <div className="relative h-72 md:h-84 w-full overflow-hidden bg-[#EDE2D3]">
+                  <img
+                    src={getAssetUrl(product.image)}
+                    alt={product.name}
+                    className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#201713]/40 via-transparent to-transparent opacity-30 group-hover:opacity-10 transition-opacity" />
+
+                  {/* Light Sweep Effect */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 -skew-x-12 ${
+                    className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -skew-x-12 ${
                       isHovered ? 'translate-x-full' : '-translate-x-full'
                     }`}
                   />
-
-                  {/* Stylized Minimal Representation Icon / Motif */}
-                  <div className="text-center relative z-10 transition-transform duration-500 group-hover:scale-105">
-                    <div className="w-28 h-28 mx-auto rounded-full border border-[#C5A46D]/30 bg-white/40 shadow-lg flex items-center justify-center relative">
-                      <Sparkles className="w-10 h-10 text-[#C5A46D] animate-pulse" />
-                      <div className="absolute inset-0 rounded-full border border-[#D9BD87]/40 scale-110" />
-                    </div>
-                    <span className="text-[10px] uppercase tracking-widest text-[#857667] block mt-4 font-medium">
-                      {product.metal}
-                    </span>
-                  </div>
 
                   {/* Floating Action Icons */}
                   <div className="absolute top-4 right-4 flex flex-col gap-2 z-20">
@@ -121,16 +118,23 @@ export default function SignatureCollectionSection({
                     <button
                       onClick={() => onOpenQuickView(product)}
                       title="3D Inspection"
-                      className="w-9 h-9 rounded-full bg-[#F7F1E8]/90 border border-[#C5A46D]/30 flex items-center justify-center text-[#392B24] hover:bg-white transition-all"
+                      className="w-9 h-9 rounded-full bg-[#F7F1E8]/90 border border-[#C5A46D]/30 flex items-center justify-center text-[#392B24] hover:bg-white transition-all shadow-sm"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
                   </div>
 
-                  {/* Top Badge */}
+                  {/* Top Carat Badge */}
                   <div className="absolute top-4 left-4 z-20">
-                    <span className="px-2.5 py-1 rounded-full bg-[#392B24]/90 text-[#F7F1E8] text-[9px] uppercase tracking-widest font-medium">
+                    <span className="px-3 py-1 rounded-full bg-[#392B24]/90 text-[#F7F1E8] text-[9px] uppercase tracking-widest font-medium backdrop-blur-sm border border-[#C5A46D]/30">
                       {product.totalCaratWeight}
+                    </span>
+                  </div>
+
+                  {/* Bottom Metal Pill */}
+                  <div className="absolute bottom-3 left-4 z-20">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#F7F1E8]/90 text-[#392B24] text-[9px] uppercase tracking-wider font-semibold backdrop-blur-sm">
+                      {product.metal}
                     </span>
                   </div>
                 </div>
@@ -163,9 +167,10 @@ export default function SignatureCollectionSection({
                   <div className="pt-2 flex gap-2">
                     <button
                       onClick={() => onOpenQuickView(product)}
-                      className="flex-1 py-2.5 px-4 rounded-full border border-[#C5A46D]/50 text-xs uppercase tracking-widest text-[#392B24] hover:bg-[#EDE2D3] transition-all font-medium text-center"
+                      className="flex-1 py-2.5 px-4 rounded-full border border-[#C5A46D]/50 text-xs uppercase tracking-widest text-[#392B24] hover:bg-[#EDE2D3] transition-all font-medium text-center flex items-center justify-center gap-1.5"
                     >
-                      3D Inspect
+                      <Eye className="w-3.5 h-3.5 text-[#C5A46D]" />
+                      <span>3D Inspect</span>
                     </button>
                     <button
                       onClick={() => onAddToCart(product)}

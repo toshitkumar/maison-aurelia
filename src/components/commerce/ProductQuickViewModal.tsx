@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Product, Currency } from '@/types/jewellery';
 import ProductModalViewer from '../3d/ProductModalViewer';
+import { getAssetUrl } from '@/utils/assetPath';
 import {
   X,
   Heart,
@@ -10,7 +11,6 @@ import {
   Shield,
   FileText,
   Ruler,
-  Sparkles,
   Check,
 } from 'lucide-react';
 
@@ -40,6 +40,7 @@ export default function ProductQuickViewModal({
   const [selectedSize, setSelectedSize] = useState<string>(
     product?.defaultSize || (product?.sizes ? product.sizes[0] : '')
   );
+  const [viewMode, setViewMode] = useState<'3d' | 'editorial'>('3d');
   const [addedAnimation, setAddedAnimation] = useState(false);
 
   if (!product) return null;
@@ -61,17 +62,53 @@ export default function ProductQuickViewModal({
           <X className="w-4 h-4" />
         </button>
 
-        {/* 3D Viewer Half */}
+        {/* Visual Media Half (3D & Editorial Toggle) */}
         <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between bg-gradient-to-b from-[#EDE2D3]/40 to-[#F7F1E8] border-b md:border-b-0 md:border-r border-[#C5A46D]/20">
-          <div>
-            <span className="text-[10px] tracking-[0.25em] uppercase text-[#C5A46D] font-medium block">
-              {product.collection}
-            </span>
-            <span className="text-xs italic text-[#857667]">{product.frenchName}</span>
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-[10px] tracking-[0.25em] uppercase text-[#C5A46D] font-medium block">
+                {product.collection}
+              </span>
+              <span className="text-xs italic text-[#857667]">{product.frenchName}</span>
+            </div>
+
+            {/* Toggle View Mode */}
+            <div className="flex gap-1.5 p-1 bg-[#EDE2D3] rounded-full border border-[#C5A46D]/30">
+              <button
+                onClick={() => setViewMode('3d')}
+                className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-semibold transition-all ${
+                  viewMode === '3d'
+                    ? 'bg-[#392B24] text-[#F7F1E8] shadow-sm'
+                    : 'text-[#857667] hover:text-[#392B24]'
+                }`}
+              >
+                3D Model
+              </button>
+              <button
+                onClick={() => setViewMode('editorial')}
+                className={`px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-semibold transition-all ${
+                  viewMode === 'editorial'
+                    ? 'bg-[#392B24] text-[#F7F1E8] shadow-sm'
+                    : 'text-[#857667] hover:text-[#392B24]'
+                }`}
+              >
+                Editorial
+              </button>
+            </div>
           </div>
 
           <div className="my-4">
-            <ProductModalViewer product={product} />
+            {viewMode === '3d' ? (
+              <ProductModalViewer product={product} />
+            ) : (
+              <div className="relative h-[360px] md:h-[420px] rounded-xl overflow-hidden bg-[#EDE2D3] border border-[#C5A46D]/20">
+                <img
+                  src={getAssetUrl(product.image)}
+                  alt={product.name}
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-between text-xs text-[#857667]">

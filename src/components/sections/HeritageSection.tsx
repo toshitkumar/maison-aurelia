@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { HERITAGE_TIMELINE } from '@/data/products';
-import { ShieldCheck, Sparkles, MapPin, Feather } from 'lucide-react';
+import { getAssetUrl } from '@/utils/assetPath';
+import { MapPin, Feather } from 'lucide-react';
 
 export default function HeritageSection() {
   return (
@@ -38,9 +39,21 @@ export default function HeritageSection() {
               >
                 {/* Visual Editorial Box */}
                 <div className="w-full lg:w-1/2">
-                  <div className="relative p-8 md:p-12 rounded-2xl bg-gradient-to-br from-[#EDE2D3]/60 to-[#F7F1E8] border border-[#C5A46D]/30 shadow-lg group hover:border-[#C5A46D] transition-all duration-500">
-                    <div className="flex items-center justify-between pb-6 border-b border-[#C5A46D]/20">
-                      <span className="font-serif text-4xl md:text-5xl font-light text-[#C5A46D]">
+                  <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-br from-[#EDE2D3]/60 to-[#F7F1E8] border border-[#C5A46D]/30 shadow-lg group hover:border-[#C5A46D] transition-all duration-500 overflow-hidden">
+                    {/* Archival Photography */}
+                    {item.image && (
+                      <div className="relative h-48 md:h-56 w-full rounded-xl overflow-hidden mb-6 bg-[#EDE2D3] border border-[#C5A46D]/20">
+                        <img
+                          src={getAssetUrl(item.image)}
+                          alt={item.title}
+                          className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#201713]/40 via-transparent to-transparent opacity-40" />
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between pb-4 border-b border-[#C5A46D]/20">
+                      <span className="font-serif text-4xl font-light text-[#C5A46D]">
                         {item.year}
                       </span>
                       <span className="flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#857667] font-medium">
@@ -49,8 +62,8 @@ export default function HeritageSection() {
                       </span>
                     </div>
 
-                    <div className="py-6">
-                      <h3 className="font-serif text-2xl text-[#392B24] mb-3">
+                    <div className="py-4">
+                      <h3 className="font-serif text-2xl text-[#392B24] mb-2">
                         {item.title}
                       </h3>
                       <p className="text-xs md:text-sm text-[#857667] leading-relaxed">
@@ -58,8 +71,8 @@ export default function HeritageSection() {
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-[#C5A46D]/15 flex items-center justify-between text-[11px] text-[#857667]">
-                      <span className="italic font-serif">Archives de la Maison</span>
+                    <div className="pt-3 border-t border-[#C5A46D]/15 flex items-center justify-between text-[11px] text-[#857667]">
+                      <span className="italic font-serif">Archives de la Maison • Place Vendôme</span>
                       <Feather className="w-4 h-4 text-[#C5A46D]/60" />
                     </div>
                   </div>

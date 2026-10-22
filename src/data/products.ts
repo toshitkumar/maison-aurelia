@@ -8,6 +8,7 @@ export const PRODUCTS: Product[] = [
     category: 'rings',
     categoryLabel: 'Diamond Rings',
     price: 34500,
+    image: '/images/etoile-celeste.jpg',
     description:
       'A masterpiece of singular majesty. Centered upon a peerless 3.20 carat D-Flawless round brilliant diamond, elevated in an architectonic six-prong basket forged in proprietary 18k Champagne Gold, lined with hidden micropavé diamonds beneath the gallery.',
     editorialQuote: 'A solitary constellation captured upon the finger, echoing eternal devotion.',
@@ -46,6 +47,7 @@ export const PRODUCTS: Product[] = [
     category: 'necklaces',
     categoryLabel: 'Diamond Necklaces',
     price: 88000,
+    image: '/images/souveraine-cascade.jpg',
     description:
       'A breathtaking river of light cascading across the décolletage. Articulated links in hand-drawn 950 Platinum form a fluid ribbon of graduated oval and round brilliant diamonds, culminating in a radiant 5.10 carat pear-shaped drop.',
     editorialQuote: 'Fluid like silk, eternal like starlight, draping the contours of royalty.',
@@ -84,6 +86,7 @@ export const PRODUCTS: Product[] = [
     category: 'earrings',
     categoryLabel: 'Diamond Earrings',
     price: 42000,
+    image: '/images/aura-royale.jpg',
     description:
       'Harmonious duality expressed through two perfectly matched 2.40 carat emerald-cut diamonds. Suspended from geometric diamond-set platinum links, they articulate softly with every movement to reflect warm candlelight.',
     editorialQuote: 'Symmetrical grace that captures and amplifies the wearer’s natural radiance.',
@@ -119,6 +122,7 @@ export const PRODUCTS: Product[] = [
     category: 'bracelets',
     categoryLabel: 'Diamond Bracelets',
     price: 28900,
+    image: '/images/riviere-eternelle.jpg',
     description:
       'The definitive statement of refined luxury. Forty-eight impeccably matched D/E color round brilliant diamonds set into continuous bezel-prong four-claw settings, engineered for unmatched flexibility and perpetual brilliance.',
     editorialQuote: 'An unbroken circle of starlight, resting effortlessly upon the wrist.',
@@ -156,6 +160,7 @@ export const PRODUCTS: Product[] = [
     category: 'rings',
     categoryLabel: 'Diamond Rings',
     price: 49500,
+    image: '/images/soleil-imperiale.jpg',
     description:
       'Inspired by the warm morning sun over Lake Geneva. An astonishing 4.05 carat elongated cushion-cut diamond of E-VVS1 grade radiates from an exquisite tiered halo of micro-brilliants and warm champagne gold prongs.',
     editorialQuote: 'An echo of dawn immortalized in pure crystallized carbon.',
@@ -192,6 +197,7 @@ export const PRODUCTS: Product[] = [
     category: 'bracelets',
     categoryLabel: 'Diamond Bracelets',
     price: 54000,
+    image: '/images/luminescence-cuff.jpg',
     description:
       'A sculptural masterpiece of high jewellery craftsmanship. Curved like waves of molten silk, this open cuff features three undulating rows of pavé and brilliant-cut diamonds, terminating in two peerless marquee solitaires.',
     editorialQuote: 'Sculpted gold and dancing diamonds undulating in graceful rhythm.',
@@ -287,6 +293,7 @@ export const HERITAGE_TIMELINE = [
     year: '1894',
     title: 'The Place Vendôme Atelier',
     city: 'Paris, France',
+    image: '/images/paris-vendome.jpg',
     description:
       'Master goldsmith Henri d’Aurélia opens his private atelier overlooking Place Vendôme, catering to European royalty and connoisseurs seeking rare diamond compositions.',
   },
@@ -294,6 +301,7 @@ export const HERITAGE_TIMELINE = [
     year: '1925',
     title: 'The Grand Exposition Universelle',
     city: 'Paris, France',
+    image: '/images/atelier-craft.jpg',
     description:
       'Maison Aurélia is awarded the Médaille d’Or for revolutionary geometric diamond articulation, setting a new benchmark for light transmission in high jewellery.',
   },
@@ -301,6 +309,7 @@ export const HERITAGE_TIMELINE = [
     year: '1968',
     title: 'The Sovereign Diamond Commission',
     city: 'Geneva, Switzerland',
+    image: '/images/editorial-model.jpg',
     description:
       'Entrusted with cutting the legendary 84-carat "Constellation de Genève" rough diamond into seven peerless royal heirlooms, celebrating pure symmetry.',
   },
@@ -308,6 +317,7 @@ export const HERITAGE_TIMELINE = [
     year: '2026',
     title: 'The Digital Haute Atelier',
     city: 'Global Flagship',
+    image: '/images/luxury-box.jpg',
     description:
       'Unveiling the virtual salon of Maison Aurélia—merging centuries of royal French craftsmanship with cutting-edge 3D optical physics and ethical diamond provenance.',
   },

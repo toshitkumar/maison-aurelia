@@ -5,14 +5,16 @@ import * as THREE from 'three';
 import { createJewelleryBoxGroup } from './JewelleryBoxMesh';
 import { createRoundBrilliantDiamondGeometry } from './DiamondGeometry';
 import { createDiamondMaterial, createLuxuryStudioEnvMap } from './Materials';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { loadDiamondGLB } from './LoadDiamondGLB';
+import { getAssetUrl } from '@/utils/assetPath';
+import { Sparkles } from 'lucide-react';
 
 export default function MasterpieceBoxViewer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(true);
   const stateRef = useRef<{
     openLid: ((p: number) => void) | null;
-    diamond: THREE.Mesh | null;
+    diamond: THREE.Object3D | null;
     sweepLight: THREE.SpotLight | null;
     boxGroup: THREE.Group | null;
   }>({
@@ -69,7 +71,7 @@ export default function MasterpieceBoxViewer() {
     stateRef.current.boxGroup = boxGroup;
     stateRef.current.openLid = openLid;
 
-    // Create Masterpiece Diamond
+    // Default procedural diamond
     const diamondGeo = createRoundBrilliantDiamondGeometry();
     const diamondMat = createDiamondMaterial(envTarget.texture);
     const diamond = new THREE.Mesh(diamondGeo, diamondMat);
@@ -78,10 +80,22 @@ export default function MasterpieceBoxViewer() {
     boxGroup.add(diamond);
     stateRef.current.diamond = diamond;
 
+    // Load user's diamond.glb
+    loadDiamondGLB(
+      getAssetUrl('/models/diamond.glb'),
+      diamondMat,
+      (gltfDiamond) => {
+        diamond.visible = false;
+        gltfDiamond.scale.set(0.65, 0.65, 0.65);
+        gltfDiamond.position.set(0, 0.22, 0);
+        boxGroup.add(gltfDiamond);
+        stateRef.current.diamond = gltfDiamond;
+      }
+    );
+
     // Initial state: box open
     openLid(1.0);
 
-    // Subtle gentle oscillation
     let animId: number;
     let clock = new THREE.Clock();
     const animate = () => {
@@ -90,7 +104,6 @@ export default function MasterpieceBoxViewer() {
 
       boxGroup.rotation.y = Math.sin(time * 0.3) * 0.12 + 0.25;
 
-      // Soft light sweep
       sweepLight.position.x = Math.sin(time * 0.9) * 5;
       sweepLight.position.z = Math.cos(time * 0.9) * 4 + 2;
 
@@ -130,22 +143,19 @@ export default function MasterpieceBoxViewer() {
     const animateBox = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease in out cubic
       const ease =
         progress < 0.5
           ? 4 * progress * progress * progress
           : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
       if (nextState) {
-        // Opening
         openLid(ease);
         diamond.position.y = THREE.MathUtils.lerp(1.6, 0.22, ease);
-        diamond.scale.setScalar(THREE.MathUtils.lerp(0.85, 0.62, ease));
+        diamond.scale.setScalar(THREE.MathUtils.lerp(0.85, 0.65, ease));
       } else {
-        // Closing
         openLid(1 - ease);
         diamond.position.y = THREE.MathUtils.lerp(0.22, 1.6, ease);
-        diamond.scale.setScalar(THREE.MathUtils.lerp(0.62, 0.85, ease));
+        diamond.scale.setScalar(THREE.MathUtils.lerp(0.65, 0.85, ease));
       }
 
       if (progress < 1) {

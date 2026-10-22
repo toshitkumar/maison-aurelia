@@ -9,15 +9,16 @@ import {
 import {
   createDiamondMaterial,
   createChampagneGoldMaterial,
-  createPlatinumMaterial,
   createLuxuryStudioEnvMap,
 } from './Materials';
 import { createSilkMesh } from './SilkMesh';
 import { createNecklaceGroup } from './NecklaceMesh';
+import { loadDiamondGLB } from './LoadDiamondGLB';
+import { getAssetUrl } from '@/utils/assetPath';
 
 interface MainCanvasProps {
-  scrollProgress: number; // 0 to 1 across the primary cinematic acts
-  activeAct: number; // 1 to 4
+  scrollProgress: number;
+  activeAct: number;
 }
 
 export default function MainExperienceCanvas({ scrollProgress, activeAct }: MainCanvasProps) {
@@ -28,11 +29,9 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
     if (!containerRef.current) return;
     const container = containerRef.current;
 
-    // Check WebGL support
     try {
       const testCanvas = document.createElement('canvas');
       if (!window.WebGLRenderingContext || !testCanvas.getContext('webgl2')) {
-        // Fallback for very old devices
         testCanvas.getContext('webgl');
       }
     } catch {
@@ -51,7 +50,7 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
       0.1,
       100
     );
-    camera.position.set(0, 3.8, 0.01); // Top down view initially
+    camera.position.set(0, 3.8, 0.01);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({
@@ -80,7 +79,6 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
     rimLight.position.set(-6, 4, -8);
     scene.add(rimLight);
 
-    // Moving Narrow Light Ray for Sparkle Sweep
     const sweepLight = new THREE.SpotLight(0xffffff, 4.5, 25, Math.PI / 8, 0.4);
     sweepLight.position.set(-4, 6, 2);
     sweepLight.target.position.set(0, 0, 0);
@@ -107,12 +105,26 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // 4. Act 1: The Origin Full Diamond
+    // 4. Act 1: Hero Diamond (Procedural + User's diamond.glb)
     const fullDiamondGeo = createRoundBrilliantDiamondGeometry();
     const diamondMat = createDiamondMaterial(envTarget.texture);
     const heroDiamond = new THREE.Mesh(fullDiamondGeo, diamondMat);
     heroDiamond.scale.set(1.4, 1.4, 1.4);
     scene.add(heroDiamond);
+
+    let activeHeroObject: THREE.Object3D = heroDiamond;
+
+    // Load user's diamond.glb
+    loadDiamondGLB(
+      getAssetUrl('/models/diamond.glb'),
+      diamondMat,
+      (gltfModel) => {
+        heroDiamond.visible = false;
+        gltfModel.scale.set(1.5, 1.5, 1.5);
+        scene.add(gltfModel);
+        activeHeroObject = gltfModel;
+      }
+    );
 
     // 5. Act 2: Deconstructed Layers Group
     const deconstructGroup = new THREE.Group();
@@ -140,7 +152,6 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
     necklaceGroup.visible = false;
     scene.add(necklaceGroup);
 
-    // Animation & Resize Loop
     let animationFrameId: number;
     let clock = new THREE.Clock();
 
@@ -159,44 +170,37 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Update Silk Wave Displacement
       updateSilk(elapsedTime, scrollProgress);
-
-      // Subtle particle float
       particles.rotation.y = elapsedTime * 0.05;
 
-      // Narrow Light Sweep movement
       sweepLight.position.x = Math.sin(elapsedTime * 0.8) * 6;
       sweepLight.position.z = Math.cos(elapsedTime * 0.8) * 4;
 
-      // Scroll State Machine (Transitions seamlessly between acts)
       if (scrollProgress < 0.28) {
         // ACT 1: THE ORIGIN (Awakening & Rotation)
-        heroDiamond.visible = true;
+        activeHeroObject.visible = true;
+        if (activeHeroObject !== heroDiamond) heroDiamond.visible = false;
         deconstructGroup.visible = false;
         necklaceGroup.visible = false;
         silkMesh.position.y = -2.5 + scrollProgress * 2.0;
 
-        // Transition from extreme top-down macro (0) to 3/4 angle
         const p1 = Math.min(scrollProgress / 0.28, 1);
-        const camDistance = THREE.MathUtils.lerp(1.7, 4.4, p1);
         const camY = THREE.MathUtils.lerp(2.2, 2.0, p1);
         const camZ = THREE.MathUtils.lerp(0.3, 3.8, p1);
 
         camera.position.set(0, camY, camZ);
         camera.lookAt(0, 0, 0);
 
-        // Scroll linked rotation
-        heroDiamond.rotation.y = scrollProgress * Math.PI * 4;
-        heroDiamond.rotation.x = Math.sin(scrollProgress * Math.PI * 2) * 0.25;
+        activeHeroObject.rotation.y = scrollProgress * Math.PI * 4;
+        activeHeroObject.rotation.x = Math.sin(scrollProgress * Math.PI * 2) * 0.25;
       } else if (scrollProgress < 0.62) {
         // ACT 2: CRAFTSMANSHIP (Deconstruction & Reconstruction)
+        activeHeroObject.visible = false;
         heroDiamond.visible = false;
         deconstructGroup.visible = true;
         necklaceGroup.visible = false;
 
         const p2 = (scrollProgress - 0.28) / (0.62 - 0.28);
-        // Explosion factor: peaks around middle of section (p2 = 0.5)
         const explode = Math.sin(p2 * Math.PI) * 1.35;
 
         tableMesh.position.y = explode * 0.85;
@@ -210,12 +214,12 @@ export default function MainExperienceCanvas({ scrollProgress, activeAct }: Main
         camera.lookAt(0, 0, 0);
       } else {
         // ACT 3: THE SILK GALLERY & SUSPENDED NECKLACE
+        activeHeroObject.visible = false;
         heroDiamond.visible = false;
         deconstructGroup.visible = false;
         necklaceGroup.visible = true;
 
         const p3 = (scrollProgress - 0.62) / (1.0 - 0.62);
-        // Silk moves gracefully aside
         silkMesh.position.x = THREE.MathUtils.lerp(0, -6.0, p3);
         silkMesh.position.z = THREE.MathUtils.lerp(-1.0, 1.5, p3);
 
